@@ -50,6 +50,12 @@
 
                            orderby katGroup.Key
 
+                           select new
+                           {
+                               katName = katGroup.Key,
+                               produkter = katGroup.ToList(),
+                               TotalQuantity = katGroup.Sum(x => x.Quantity)
+                           };
             //***Hitta de 5 produkter som har lägst lagersaldo och behöver beställas***
 
             var productsToOrder = (from product in inventory  
@@ -75,13 +81,7 @@
             {
                 Console.WriteLine(product.ToString());
             }
-            
-                           select new
-                           {
-                               katName = katGroup.Key,
-                               produkter = katGroup.ToList(),
-                               TotalQuantity = katGroup.Sum(x => x.Quantity)
-                           };
+
             foreach (var catName in grouping)
             {
                 Console.WriteLine(catName.katName);
