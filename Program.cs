@@ -32,6 +32,17 @@
             var prod = LoadInventoryData();
 
             // Implementera query expressions här
+            //Beräkna det totala värdet av alla produkter i lager
+            decimal totalValue = inventory.Sum(x => x.Price);
+            Console.WriteLine($"Totalt värde av produkter: {totalValue}");
+
+            //Hitta alla produkter som inte har blivit påfyllda de senaste 30 dagarna
+            var needsRestock = inventory.Where(x => x.LastRestocked.DayOfYear > 30);
+            Console.WriteLine($"Alla produkter som inte har blivit påfyllda de senaste dagarna:");
+            foreach (Product p in needsRestock)
+            {
+                Console.WriteLine($"{p.Name} fylldes senast på för {p.LastRestocked.DayOfYear} dagar sen");
+            }
 
             Console.ReadLine();
         }
