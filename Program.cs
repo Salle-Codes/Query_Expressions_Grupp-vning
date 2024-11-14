@@ -33,6 +33,32 @@
 
             // Implementera query expressions här
 
+            //***Hitta de 5 produkter som har lägst lagersaldo och behöver beställas***
+
+            var productsToOrder = (from product in inventory  
+                                   where product.Quantity < 1001
+                                   orderby product.Quantity ascending 
+                                   select product).Take(5);
+
+            foreach (var product in productsToOrder)
+            {
+                Console.WriteLine($"Product: {product.Name}, Quantity: {product.Quantity}");
+            }
+            
+
+            //***Öka priset med 10% för alla produkter i kategorin "Elektronik"***
+            var electronicsProducts = prod.Where(p => p.Category == "Elektronik");   //sorterar ut all Elektronik från prod(List<produkter>) och lägger i electronicsProduct.
+
+            foreach (var product in electronicsProducts)                             // för varje prudukt/sak i electronicsProduct
+            {
+                product.Price *= 1.10m;                                              //ökar priset med 10% på alla produkter i electronicsProduct
+            }
+            Console.WriteLine("Produkter i kategorin Elektronik efter prisökningen:");
+            foreach (var product in electronicsProducts)
+            {
+                Console.WriteLine(product.ToString());
+            }
+            
             Console.ReadLine();
         }
 
