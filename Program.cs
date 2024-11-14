@@ -63,7 +63,7 @@
                                    orderby product.Quantity ascending 
                                    select product).Take(5);
             //Beräkna det totala värdet av alla produkter i lager
-            decimal totalValue = inventory.Sum(x => x.Price);
+            decimal totalValue = inventory.Sum(x => x.Price * x.Quantity);
             Console.WriteLine($"Totalt värde av produkter: {totalValue}");
 
             //Hitta alla produkter som inte har blivit påfyllda de senaste 30 dagarna
@@ -102,8 +102,25 @@
             var priceMax = (from p in inventory
                             group p by p.Category into priceCat
                             select priceCat.Average(x => x.Price)).Max();
-                           
+
             Console.WriteLine($"{priceMax:C2}");
+
+            //Skapa en lista med produktnamn och dess lagervärde (pris * kvantitet) för produkter med ett lagervärde över 1000 kr.
+            var inventoryValue = from p in inventory
+                                 select new
+                                 {
+                                     storage = p.Quantity,
+                                     price = p.Price
+                                 };
+            foreach (var item in inventoryValue)
+            {
+                int x = item.storage * Convert.ToInt32(item.price);
+                if (x > 1000)
+                {
+                    Console.WriteLine(x);
+                }
+            }
+
             Console.ReadLine();
         }
 
